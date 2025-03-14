@@ -3,7 +3,7 @@ name: Deployment Script
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   deploy:
