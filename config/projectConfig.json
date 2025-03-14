@@ -1,0 +1,14 @@
+{
+    "projectPrefix": "kaito",
+    "environments": {
+        "DEV": {
+            "region": "ap-south-1"
+        },
+        "TEST": {
+            "region": "ap-south-1"
+        },
+        "PROD": {
+            "region": "ap-south-1"
+        }
+    }
+}

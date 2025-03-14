@@ -1,0 +1,54 @@
+name: Deployment Script
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install AWS CDK
+        run: npm install -g aws-cdk
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
+
+      - name: Bootstrap CDK
+        run: cdk bootstrap
+
+      - name: Synthesize CloudFormation Template
+        run: cdk synth
+
+      - name: Deploy AWS CDK Stack
+        run: cdk destroy --require-approval never
+
+      - name: Invoke Lambda for Schema Creation
+        run: |
+          LAMBDA_NAME="Kaito-SchemaCreator"  # ✅ Fixed name for accuracy
+          if aws lambda get-function --function-name "$LAMBDA_NAME" --region ap-south-1; then
+            aws lambda invoke \
+              --function-name "$LAMBDA_NAME" \
+              --region ap-south-1 \
+              output.json
+          else
+            echo "❌ Lambda function '$LAMBDA_NAME' not found."
+            exit 1
+          fi
