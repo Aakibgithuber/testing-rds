@@ -3,7 +3,7 @@ name: Deployment Script
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   deploy:
@@ -38,7 +38,7 @@ jobs:
         run: cdk synth
 
       - name: Deploy AWS CDK Stack
-        run: cdk destroy --require-approval never
+        run: cdk deploy --require-approval never
 
       - name: Invoke Lambda for Schema Creation
         run: |
