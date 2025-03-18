@@ -63,7 +63,7 @@ const createBeanstalkEnv = (scope: Construct, id: string, appName: string, insta
 // 🔹 Function to create Lambda Functions
 const createSchemaCreatorLambda = (scope: Construct, id: string) => {
     return new nodejs.NodejsFunction(scope, id, {
-        functionName: `${id}-Kaito-SchemaCreator`,
+        functionName: `${id}`,
         runtime: lambda.Runtime.NODEJS_20_X,
         handler: 'handler',
         entry: 'lib/lambda/schema_creator.ts',
