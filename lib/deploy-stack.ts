@@ -113,17 +113,11 @@ export class KaitoApplicationStack extends cdk.Stack {
         const schemaCreatorLambda1 = createSchemaCreatorLambda(this, 'Kaito-SchemaCreator');
         const schemaCreatorLambda2 = createSchemaCreatorLambda(this, 'SchemaCreatorLambda2');
 
-        // CloudFront Distributions
-        const cfDistribution1 = createCloudFront(this, 'MyCloudFront1', `${ebEnv1.attrEndpointUrl}`);
-        const cfDistribution2 = createCloudFront(this, 'MyCloudFront2', `${ebEnv2.attrEndpointUrl}`);
-
         // Outputs
         new cdk.CfnOutput(this, 'BucketName1', { value: bucket1.bucketName });
         new cdk.CfnOutput(this, 'BucketName2', { value: bucket2.bucketName });
         new cdk.CfnOutput(this, 'ElasticBeanstalkEnv1', { value: ebEnv1.ref });
         new cdk.CfnOutput(this, 'ElasticBeanstalkEnv2', { value: ebEnv2.ref });
-        new cdk.CfnOutput(this, 'CloudFrontURL1', { value: cfDistribution1.distributionDomainName });
-        new cdk.CfnOutput(this, 'CloudFrontURL2', { value: cfDistribution2.distributionDomainName });
         new cdk.CfnOutput(this, 'Lambda1', { value: schemaCreatorLambda1.functionName });
         new cdk.CfnOutput(this, 'Lambda2', { value: schemaCreatorLambda2.functionName });
     }
